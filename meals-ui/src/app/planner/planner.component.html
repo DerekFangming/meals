@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="row mt-5 mx-2">
+    <div class="col">
+      <p class="display-1 text-center text-truncate"><span>&nbsp;</span>{{code}}</p>
+    </div>
+  </div>
+  <div class="row mx-4">
+    <div class="col-4 mt-3" *ngFor="let k of keys">
+      <button type="button" class="btn mt-2 me-2 btn-outline-success w-100 key-style" (click)="keyPressed(k)">
+        <p class="display-2 mb-0">{{k}}</p>
+      </button>
+    </div>
+  </div>
+  <div class="row mx-4 my-4">
+    <div class="col-6">
+      <button type="button" class="btn mt-2 me-2 btn-danger w-100" (click)="deletePressed()">
+        <p class="lead my-2"><i class="fa fa-angle-left" aria-hidden="true"></i> Delete</p>
+      </button>
+    </div>
+    <div class="col-6">
+      <button type="button" class="btn mt-2 me-2 btn-success w-100" (click)="sendPressed()">
+        <p class="lead my-2"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Send</p>
+      </button>
+    </div>
+  </div>
+</div>
