@@ -15,51 +15,99 @@ import { HttpClient } from '@angular/common/http'
 })
 export class PlannerComponent implements OnInit {
 
-  keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '0', '#', ]
-  code = ''
+  today = new Date()
+  // todayCol = 0
+
+  weekRangeLabel = ''
+
+  week : Date[] = []
+  weekLabel = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+  monthLabel = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
 
   constructor(private http: HttpClient, private notifierService: NotificationsService) {
   }
 
   ngOnInit() {
-    this.http.get<any>(environment.urlPrefix + 'testJson').subscribe({
-      next: (res: any) => {
-        console.log(res)
-      },
-      error: (error: any) => {
-        console.log(error)
-      }
-    })
+    this.displayCurrentWeek()
+
+    // for (let i = 0; i < 7; i ++) {
+    //   let day = new Date(this.today)
+    //   day.setDate(this.today.getDate() + i - dayOfWeek)
+    //   this.week.push(day)
+
+    //   // if (i - dayOfWeek == 0 ) this.todayCol = i
+    // }
+
+    // this.weekRangeLabel = `${this.monthLabel[this.week[0].getMonth()]} ${this.week[0].getDate()} - ${this.monthLabel[this.week[6].getMonth()]} ${this.week[6].getDate()}, ${this.week[6].getFullYear()}`
+
   }
 
-  keyPressed(key: string) {
-    this.code += key
+  displayCurrentWeek() {
+    let start = new Date(this.today)
+    start.setDate(this.today.getDate() - this.today.getDay())
+    this.displayWeekStartingWith(start)
   }
 
-  deletePressed() {
-    this.code = this.code.slice(0, -1);
-  }
-
-  sendPressed() {
-    if (this.code == '') {
-      this.notifierService.error('Code is empty')
-      return
+  displayWeekStartingWith(start: Date) {
+    this.week = []
+    for (let i = 0; i < 7; i ++) {
+      let day = new Date(start)
+      day.setDate(start.getDate() + i)
+      this.week.push(day)
     }
 
-    this.http.post<any>(environment.urlPrefix + 'api/send-code', {code: this.code}).subscribe({
-      next: (res: any) => {
-        this.notifierService.success('Code is sent')
-        this.code = ''
-      },
-      error: (error: any) => {
-        if (error.status == 429) {
-          this.notifierService.error('Too many requests, please try again later.')
-        } else {
-          this.notifierService.error('Unknown error, please try again later.')
-        }
-      }
-    })
-
+    this.weekRangeLabel = `${this.monthLabel[this.week[0].getMonth()]} ${this.week[0].getDate()} - ${this.monthLabel[this.week[6].getMonth()]} ${this.week[6].getDate()}, ${this.week[6].getFullYear()}`
   }
+
+  displayPreviousWeek() {
+    let start = new Date(this.week[0])
+    start.setDate(start.getDate() - 7)
+    this.displayWeekStartingWith(start)
+  }
+
+  displayNextWeek() {
+    let start = new Date(this.week[0])
+    start.setDate(start.getDate() + 7)
+    this.displayWeekStartingWith(start)
+  }
+
+
+    // this.http.get<any>(environment.urlPrefix + 'testJson').subscribe({
+    //   next: (res: any) => {
+    //     console.log(res)
+    //   },
+    //   error: (error: any) => {
+    //     console.log(error)
+    //   }
+    // })
+  // keyPressed(key: string) {
+  //   this.code += key
+  // }
+
+  // deletePressed() {
+  //   this.code = this.code.slice(0, -1);
+  // }
+
+  // sendPressed() {
+  //   if (this.code == '') {
+  //     this.notifierService.error('Code is empty')
+  //     return
+  //   }
+
+  //   this.http.post<any>(environment.urlPrefix + 'api/send-code', {code: this.code}).subscribe({
+  //     next: (res: any) => {
+  //       this.notifierService.success('Code is sent')
+  //       this.code = ''
+  //     },
+  //     error: (error: any) => {
+  //       if (error.status == 429) {
+  //         this.notifierService.error('Too many requests, please try again later.')
+  //       } else {
+  //         this.notifierService.error('Unknown error, please try again later.')
+  //       }
+  //     }
+  //   })
+
+  // }
 
 }
