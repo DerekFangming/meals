@@ -16,7 +16,7 @@ import { HttpClient } from '@angular/common/http'
 export class PlannerComponent implements OnInit {
 
   today = new Date()
-  // todayCol = 0
+  todayCol = -1
 
   weekRangeLabel = ''
 
@@ -29,17 +29,6 @@ export class PlannerComponent implements OnInit {
 
   ngOnInit() {
     this.displayCurrentWeek()
-
-    // for (let i = 0; i < 7; i ++) {
-    //   let day = new Date(this.today)
-    //   day.setDate(this.today.getDate() + i - dayOfWeek)
-    //   this.week.push(day)
-
-    //   // if (i - dayOfWeek == 0 ) this.todayCol = i
-    // }
-
-    // this.weekRangeLabel = `${this.monthLabel[this.week[0].getMonth()]} ${this.week[0].getDate()} - ${this.monthLabel[this.week[6].getMonth()]} ${this.week[6].getDate()}, ${this.week[6].getFullYear()}`
-
   }
 
   displayCurrentWeek() {
@@ -50,13 +39,18 @@ export class PlannerComponent implements OnInit {
 
   displayWeekStartingWith(start: Date) {
     this.week = []
+    this.todayCol = -1
     for (let i = 0; i < 7; i ++) {
       let day = new Date(start)
       day.setDate(start.getDate() + i)
       this.week.push(day)
+
+      if (day.getTime() == this.today.getTime()) this.todayCol = i
     }
 
     this.weekRangeLabel = `${this.monthLabel[this.week[0].getMonth()]} ${this.week[0].getDate()} - ${this.monthLabel[this.week[6].getMonth()]} ${this.week[6].getDate()}, ${this.week[6].getFullYear()}`
+
+    
   }
 
   displayPreviousWeek() {

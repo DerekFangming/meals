@@ -1,39 +1,7 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container">
-    <a class="navbar-brand">Meal Planner</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <a class="nav-link pointer active">Planner</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link pointer">月子餐</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link pointer">健康饮食</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link">大鱼大肉</a>
-        </li>
-      </ul>
-      <!-- <form *ngIf="category" class="form-inline my-2 my-lg-0">
-        <button type="button" class="btn btn-outline-success" [disabled]="loading" (click)="addRecipe()">Add</button>
-      </form>
-      <form *ngIf="editing" class="form-inline my-2 my-lg-0">
-        <button type="button" class="btn btn-outline-danger me-2" [disabled]="loading" (click)="cancelRecipe()">Cancel</button>
-        <button type="button" class="btn btn-primary" [disabled]="loading" (click)="saveRecipe()">Save</button>
-      </form> -->
-    </div>
-  </div>
-</nav>
-
 <div class="container-fluid">
   <div class="row mt-5">
     <div class="col">
-      <button type="button" class="btn btn-outline-secondary" (click)="displayCurrentWeek()">跳转到本周</button>
+      <button type="button" class="btn btn-outline-secondary" (click)="displayCurrentWeek()" [disabled]="todayCol != -1">跳转到本周</button>
       <button type="button" class="btn btn-outline-secondary ms-4" (click)="displayPreviousWeek()"><i class="fa fa-angle-left px-1" aria-hidden="true"></i></button>
       <button type="button" class="btn btn-outline-secondary ms-2" (click)="displayNextWeek()"><i class="fa fa-angle-right px-1" aria-hidden="true"></i></button>
       <span class="lead ms-2">{{weekRangeLabel}}</span>
@@ -45,7 +13,7 @@
         <thead class="table-light">
           <tr>
             <th style="width:5%;" scope="col" ></th>
-            <th style="width:13%;" [style.background-color]="day.getTime() == today.getTime() ? '#e3f2fd' : ''" scope="col" *ngFor="let day of week; let i = index">
+            <th style="width:13%;" [style.background-color]="i == todayCol ? '#e3f2fd' : ''" scope="col" *ngFor="let day of week; let i = index">
               <p class="lead mb-0" style="font-size: 2rem;">{{day.getDate()}}</p>
               <p class="mb-0" style="font-weight: 300;">{{weekLabel[i]}}</p>
             </th>
@@ -54,8 +22,8 @@
         <tbody>
           <tr style="height:150px">
             <th scope="row">早餐</th>
-            <th scope="col" *ngFor="let day of week">
-              <div class="card">
+            <th scope="col" [style.background-color]="i == todayCol ? '#e3f2fd' : ''" *ngFor="let day of week; let i = index">
+              <div class="card bg-transparent">
                 <div class="card-body">
                   <h5 class="card-title mb-0">馒头</h5>
                   <h5 class="card-title mb-0">馒头</h5>
@@ -71,15 +39,15 @@
           </tr>
           <tr style="height:150px">
             <th scope="row">午餐</th>
-            <th scope="col" *ngFor="let day of week"></th>
+            <th scope="col" [style.background-color]="i == todayCol ? '#e3f2fd' : ''" *ngFor="let day of week; let i = index"></th>
           </tr>
           <tr style="height:150px">
             <th scope="row">晚餐</th>
-            <th scope="col" *ngFor="let day of week"></th>
+            <th scope="col" [style.background-color]="i == todayCol ? '#e3f2fd' : ''" *ngFor="let day of week; let i = index"></th>
           </tr>
           <tr style="height:150px">
             <th scope="row">加餐</th>
-            <th scope="col" *ngFor="let day of week"></th>
+            <th scope="col" [style.background-color]="i == todayCol ? '#e3f2fd' : ''" *ngFor="let day of week; let i = index"></th>
           </tr>
         </tbody>
       </table>

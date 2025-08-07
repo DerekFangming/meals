@@ -1,2 +1,33 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand">Meal Planner</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link pointer" [class.active] = "currentTab == 'planner'" (click)="goToTab('planner')">Planner</a>
+        </li>
+        <li class="nav-item" *ngFor="let c of categories">
+          <a class="nav-link pointer" [class.active] = "currentTab == c.name" (click)="goToTab(c.name)">{{ c.label }}</a>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link pointer">健康饮食</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link">大鱼大肉</a>
+        </li> -->
+      </ul>
+      <!-- <form *ngIf="category" class="form-inline my-2 my-lg-0">
+        <button type="button" class="btn btn-outline-success" [disabled]="loading" (click)="addRecipe()">Add</button>
+      </form>
+      <form *ngIf="editing" class="form-inline my-2 my-lg-0">
+        <button type="button" class="btn btn-outline-danger me-2" [disabled]="loading" (click)="cancelRecipe()">Cancel</button>
+        <button type="button" class="btn btn-primary" [disabled]="loading" (click)="saveRecipe()">Save</button>
+      </form> -->
+    </div>
+  </div>
+</nav>
 <router-outlet></router-outlet>
 <simple-notifications></simple-notifications>
