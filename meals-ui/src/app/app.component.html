@@ -12,12 +12,6 @@
         <li class="nav-item" *ngFor="let c of categories">
           <a class="nav-link pointer" [class.active] = "currentTab == c.name" (click)="goToTab(c.name)">{{ c.label }}</a>
         </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link pointer">健康饮食</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link">大鱼大肉</a>
-        </li> -->
       </ul>
       <!-- <form *ngIf="category" class="form-inline my-2 my-lg-0">
         <button type="button" class="btn btn-outline-success" [disabled]="loading" (click)="addRecipe()">Add</button>

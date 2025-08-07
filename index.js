@@ -4,14 +4,25 @@ const cors = require('cors')
 const path = require('path')
 const axios = require('axios')
 const fs = require('fs')
-const { Client } = require('pg')
+const pg = require('pg')
 
 const port = '9005'
 const app = express()
 app.use(bodyParser.json({limit: '100mb'}), cors())
 
+dbConfig = {
+  user: 'postgres',
+  host: process.env.PRODUCTION ? 'localhost' : '10.0.1.100',
+  database: process.env.PRODUCTION ? 'fmning' : 'test',
+  password: process.env.DATABASE_PASSWORD,
+  port: 5432,
+  max: 10,
+  idleTimeoutMillis: 30000 
+}
 
-app.post('/api/send-code', async (req, res) => {
+let pool = new pg.Pool(dbConfig)
+
+app.post('/api/meal-plans', async (req, res) => {
   console.log(`Receive code ${req.body.code}`)
 
   res.status(200).json({})
@@ -19,6 +30,13 @@ app.post('/api/send-code', async (req, res) => {
 
 
 app.get('/test', async (req, res) => {
+  // let result = await pool.query(`select key, value from meal_plans where key = $1`, ['foo'])
+  // console.log(result.rows[0].key + ' - ' + result.rows[0].value)
+  
+  let result = await pool.query(`select key, value from meal_plans`, [])
+  console.log(result.rows.length)
+  console.log(result.rows[0].key + ' - ' + result.rows[0].value)
+  console.log(result.rows[1].key + ' - ' + result.rows[1].value)
   res.status(200).json({})
 })
 
@@ -35,13 +53,13 @@ app.listen(port, () => {
 })
 
 // async function getUrl() {
-//   const client = new Client({
-//     user: 'postgres',
-//     host: process.env.PRODUCTION ? 'localhost' : '10.0.1.100',
-//     database: process.env.PRODUCTION ? 'fmning' : 'test',
-//     password: process.env.DATABASE_PASSWORD,
-//     port: 5432,
-//   })
+  // const client = new Client({
+  //   user: 'postgres',
+  //   host: process.env.PRODUCTION ? 'localhost' : '10.0.1.100',
+  //   database: process.env.PRODUCTION ? 'fmning' : 'test',
+  //   password: process.env.DATABASE_PASSWORD,
+  //   port: 5432,
+  // })
 
 //   try {
 //     await client.connect()

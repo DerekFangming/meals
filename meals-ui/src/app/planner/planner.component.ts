@@ -5,6 +5,7 @@ import { RouterOutlet } from '@angular/router'
 import { FormsModule } from '@angular/forms'
 import { environment } from '../../environments/environment'
 import { HttpClient } from '@angular/common/http'
+import { MealsService } from '../meals.service'
 
 @Component({
   selector: 'app-planner',
@@ -24,11 +25,12 @@ export class PlannerComponent implements OnInit {
   weekLabel = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
   monthLabel = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
 
-  constructor(private http: HttpClient, private notifierService: NotificationsService) {
+  constructor(private mealsService: MealsService, private http: HttpClient, private notifierService: NotificationsService) {
   }
 
   ngOnInit() {
     this.displayCurrentWeek()
+    console.log(this.mealsService.getAllMeals())
   }
 
   displayCurrentWeek() {
