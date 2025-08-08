@@ -22,6 +22,24 @@ dbConfig = {
 
 let pool = new pg.Pool(dbConfig)
 
+app.get('/api/meal-plans', async (req, res) => {
+  console.log(`Receive code ${req.query.dates}`)
+
+  res.status(200).json({
+    '8/4/2025': {
+      snack: ['苏打饼干'],
+    },
+    '8/5/2025': {
+      lunch: ['饭菜1', '饭菜2', '饭菜3', '饭菜4', '饭菜5', '饭菜6'],
+    },
+    '8/7/2025': {
+      breakfast: ['馒头', '炒菜', '白粥'],
+      lunch: ['红烧肉', '面包', '汤', '菜心'],
+      dinner: ['石锅拌饭'],
+    }
+  })
+})
+
 app.post('/api/meal-plans', async (req, res) => {
   console.log(`Receive code ${req.body.code}`)
 

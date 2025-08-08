@@ -1,3 +1,12 @@
 .pointer {
   cursor: pointer;
 }
+
+.nav-inline {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start; 
+  list-style: none;
+  padding: 0;
+  white-space: nowrap;
+}
