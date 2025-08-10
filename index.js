@@ -46,6 +46,25 @@ app.post('/api/meal-plans', async (req, res) => {
   res.status(200).json({})
 })
 
+app.get('/api/meals', async (req, res) => {
+  res.status(200).json({
+    '月子餐': {
+      'label': '月子餐',
+      'categories': {
+        '荤菜': ['花生闷猪蹄', '红烧肉', '花生闷猪蹄', '红烧肉', '花生闷猪蹄', '红烧肉', '花生闷猪蹄', '红烧肉', '花生闷猪蹄', '红烧肉', '花生闷猪蹄', '红烧肉'],
+        '素菜': ['炒青菜'],
+        '粥类': ['小米粥'],
+        '主食': ['白饭'],
+      }
+    },
+    '健康饮食': {
+      'label': '健康饮食'
+    },
+    '大鱼大肉': {
+    }
+  })
+})
+
 
 app.get('/test', async (req, res) => {
   // let result = await pool.query(`select key, value from meal_plans where key = $1`, ['foo'])
