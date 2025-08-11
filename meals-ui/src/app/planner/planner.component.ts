@@ -5,7 +5,7 @@ import { RouterOutlet } from '@angular/router'
 import { FormsModule } from '@angular/forms'
 import { environment } from '../../environments/environment'
 import { HttpClient, HttpParams } from '@angular/common/http'
-import { MealsService } from '../meals.service'
+import { DishesService } from '../dishes.service'
 
 declare var $: any
 
@@ -27,8 +27,8 @@ export class PlannerComponent implements OnInit {
   weekLabel = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
   monthLabel = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
 
-  meal:any = {}
-  mealFiltered:any = {}
+  dishType:any = {}
+  dishTypeFiltered:any = {}
   mealLabel = ''
   dishKeyword = ''
   mealPlans:any = {}
@@ -38,12 +38,12 @@ export class PlannerComponent implements OnInit {
   mealSelected = ''
 
 
-  constructor(public mealsService: MealsService, private http: HttpClient, private notifierService: NotificationsService) {
+  constructor(public dishesService: DishesService, private http: HttpClient, private notifierService: NotificationsService) {
   }
 
   ngOnInit() {
     this.displayCurrentWeek()
-    // this.mealsService.getAllMeals().subscribe({
+    // this.dishesService.getAllMeals().subscribe({
     //   next: (res: any) => {
     //   },
     //   error: (error: any) => {
@@ -95,16 +95,16 @@ export class PlannerComponent implements OnInit {
     this.displayWeekStartingWith(start)
   }
 
-  selectMealCategory(meal: any) {
-    this.meal = meal
-    this.mealFiltered = structuredClone(meal)
+  selectDishType(dishType: any) {
+    this.dishType = dishType
+    this.dishTypeFiltered = structuredClone(dishType)
   }
 
   editMeal(date: Date, meal: string) {
     this.mealLabel = `${date.getFullYear()} ${this.monthLabel[date.getMonth()]} ${date.getDate()} / ${this.weekLabel[date.getDay()]} / ` + 
       (meal == 'breakfast' ? '早餐' : meal == 'lunch' ? '午餐' : meal == 'dinner' ? '晚餐' : '加餐')
-    this.meal = this.mealsService.meals[0]
-    this.mealFiltered = structuredClone(this.mealsService.meals[0])
+    this.dishType = this.dishesService.dishes[0]
+    this.dishTypeFiltered = structuredClone(this.dishesService.dishes[0])
     this.dishKeyword = ''
 
     this.dateSelected = date
@@ -128,11 +128,11 @@ export class PlannerComponent implements OnInit {
   }
 
   searchDishes() {
-    let filtered = structuredClone(this.meal)
+    let filtered = structuredClone(this.dishType)
     for (let c of filtered['categories']) {
       c['meals'] = c['meals'].filter((m:string) => m.includes(this.dishKeyword))
     }
-    this.mealFiltered = filtered
+    this.dishTypeFiltered = filtered
   }
 
   selectDish(dish: string) {

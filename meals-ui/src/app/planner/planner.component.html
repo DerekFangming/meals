@@ -61,8 +61,8 @@
         <nav class="navbar navbar-light bg-transparent">
           <div class="container-fluid">
             <ul class="navbar-nav nav-inline">
-              <li class="nav-item" *ngFor="let c of mealsService.meals">
-                <a class="nav-link pointer ms-3" [class.active]="meal['id'] == c['id']" (click)="selectMealCategory(c)">{{ c['name'] }}</a>
+              <li class="nav-item" *ngFor="let d of dishesService.dishes">
+                <a class="nav-link pointer ms-3" [class.active]="dishType['id'] == d['id']" (click)="selectDishType(d)">{{ d['name'] }}</a>
               </li>
             </ul>
             <form class="d-flex">
@@ -74,11 +74,11 @@
           <div class="col">
             <table class="table table-bordered">
               <tbody>
-                <tr *ngFor="let c of mealFiltered['categories']">
+                <tr *ngFor="let c of dishTypeFiltered['categories']">
                   <th style="width:10%;" class="fw-light" class="fw-light" scope="row"> {{ c['name'] }}</th>
                   <th style="width:90%;" class="fw-light" scope="col" style="display: flex; flex-wrap: wrap;">
-                    <h5 *ngFor="let m of c['meals']">
-                      <span class="badge pointer me-2 fw-light" [ngClass]="dishesSelected.includes(m) ? 'bg-success' : 'bg-secondary'" (click)="selectDish(m)">{{ m }}</span>
+                    <h5 *ngFor="let d of c['dishes']">
+                      <span class="badge pointer me-2 fw-light" [ngClass]="dishesSelected.includes(d) ? 'bg-success' : 'bg-secondary'" (click)="selectDish(d)">{{ d }}</span>
                     </h5>
                   </th>
                 </tr>

@@ -46,26 +46,26 @@ app.post('/api/meal-plans', async (req, res) => {
   res.status(200).json({})
 })
 
-app.get('/api/meals', async (req, res) => {
+app.get('/api/dishes', async (req, res) => {
   res.status(200).json([{
     'id': 'postpartum',
     'name': '月子餐',
     'categories': [
       {
         'name': '荤菜',
-        'meals': ['花生闷猪蹄', '红烧肉']
+        'dishes': ['花生闷猪蹄', '红烧肉']
       },
       {
         'name': '素菜',
-        'meals': ['炒青菜', '汤', '菜心']
+        'dishes': ['炒青菜', '汤', '菜心']
       },
       {
         'name': '粥类',
-        'meals': ['小米粥', '白粥']
+        'dishes': ['小米粥', '白粥']
       },
       {
         'name': '主食',
-        'meals': ['白饭', '馒头', '面包', '石锅拌饭', '苏打饼干']
+        'dishes': ['白饭', '馒头', '面包', '石锅拌饭', '苏打饼干']
       }
     ]
   }, {

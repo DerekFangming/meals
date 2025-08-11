@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common'
 import { Component, OnInit } from '@angular/core'
 import { Router, RouterOutlet } from '@angular/router'
 import { NotificationsService, SimpleNotificationsModule } from 'angular2-notifications'
-import { MealsService } from './meals.service'
+import { DishesService } from './dishes.service'
 
 @Component({
   selector: 'app-root',
@@ -28,10 +28,10 @@ export class AppComponent implements OnInit {
 
   currentTab = 'planner'
   
-  constructor(private mealsService: MealsService, private router: Router, private notifierService: NotificationsService){}
+  constructor(private mealsService: DishesService, private router: Router, private notifierService: NotificationsService){}
 
   ngOnInit() {
-    this.mealsService.getAllMeals().subscribe({
+    this.mealsService.getAllDishes().subscribe({
       next: (res: any) => {
         this.meals = res
       },
