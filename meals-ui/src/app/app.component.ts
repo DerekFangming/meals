@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common'
 import { Component, OnInit } from '@angular/core'
 import { Router, RouterOutlet } from '@angular/router'
-import { SimpleNotificationsModule } from 'angular2-notifications'
+import { NotificationsService, SimpleNotificationsModule } from 'angular2-notifications'
+import { MealsService } from './meals.service'
 
 @Component({
   selector: 'app-root',
@@ -12,25 +13,35 @@ import { SimpleNotificationsModule } from 'angular2-notifications'
 })
 export class AppComponent implements OnInit {
 
-  categories = [{
-    label: '月子餐',
-    name: 'postpartum'
-  },{
-    label: '健康饮食',
-    name: 'healthy'
-  },{
-    label: '大鱼大肉',
-    name: 'meaty'
-  }]
+  // categories = [{
+  //   label: '月子餐1',
+  //   name: 'postpartum'
+  // },{
+  //   label: '健康饮食2',
+  //   name: 'healthy'
+  // },{
+  //   label: '大鱼大肉3',
+  //   name: 'meaty'
+  // }]
+  
+  meals = []
 
   currentTab = 'planner'
   
-  constructor(private router: Router){}
+  constructor(private mealsService: MealsService, private router: Router, private notifierService: NotificationsService){}
 
   ngOnInit() {
+    this.mealsService.getAllMeals().subscribe({
+      next: (res: any) => {
+        this.meals = res
+      },
+      error: (error: any) => {
+        this.notifierService.error('Unknown error, please try again later.')
+      }
+    })
   }
 
-  goToTab(tabName: string) {
+  goToTab(tabName: any) {
     this.currentTab = tabName
 
     if (this.currentTab == 'planner') {

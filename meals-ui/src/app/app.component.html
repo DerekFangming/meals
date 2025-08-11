@@ -9,11 +9,11 @@
         <li class="nav-item">
           <a class="nav-link pointer" [class.active] = "currentTab == 'planner'" (click)="goToTab('planner')">Planner</a>
         </li>
-        <li class="nav-item" *ngFor="let c of categories">
-          <a class="nav-link pointer" [class.active] = "currentTab == c.name" (click)="goToTab(c.name)">{{ c.label }}</a>
+        <li class="nav-item" *ngFor="let m of meals">
+          <a class="nav-link pointer" [class.active] = "currentTab == m['id']" (click)="goToTab(m['id'])">{{ m['name'] }}</a>
         </li>
       </ul>
-      <!-- <form *ngIf="category" class="form-inline my-2 my-lg-0">
+      <!-- <form *ngIf="category" class="form-inline my-2 my-lg-0">    [class.active] = "currentTab == m.['id']"
         <button type="button" class="btn btn-outline-success" [disabled]="loading" (click)="addRecipe()">Add</button>
       </form>
       <form *ngIf="editing" class="form-inline my-2 my-lg-0">

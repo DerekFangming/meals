@@ -27,16 +27,29 @@ export class PlannerComponent implements OnInit {
   weekLabel = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
   monthLabel = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
 
+  meal:any = {}
+  mealFiltered:any = {}
   mealLabel = ''
-  mealCategory = {name: '', label: ''}
-  mealPlans = {}
+  dishKeyword = ''
+  mealPlans:any = {}
+
+  dishesSelected:any = []
+  dateSelected = new Date()
+  mealSelected = ''
+
 
   constructor(public mealsService: MealsService, private http: HttpClient, private notifierService: NotificationsService) {
   }
 
   ngOnInit() {
     this.displayCurrentWeek()
-    console.log(this.mealsService.getAllMeals())
+    // this.mealsService.getAllMeals().subscribe({
+    //   next: (res: any) => {
+    //   },
+    //   error: (error: any) => {
+    //     this.notifierService.error('Unknown error, please try again later.')
+    //   }
+    // })
   }
 
   displayCurrentWeek() {
@@ -82,46 +95,53 @@ export class PlannerComponent implements OnInit {
     this.displayWeekStartingWith(start)
   }
 
-  selectMealCategory(category: any) {
-    this.mealCategory = category
+  selectMealCategory(meal: any) {
+    this.meal = meal
+    this.mealFiltered = structuredClone(meal)
   }
 
   editMeal(date: Date, meal: string) {
-    console.log(date + ' - ' + meal)
-    
     this.mealLabel = `${date.getFullYear()} ${this.monthLabel[date.getMonth()]} ${date.getDate()} / ${this.weekLabel[date.getDay()]} / ` + 
       (meal == 'breakfast' ? '早餐' : meal == 'lunch' ? '午餐' : meal == 'dinner' ? '晚餐' : '加餐')
-    this.mealCategory = this.mealsService.categories[0]
+    this.meal = this.mealsService.meals[0]
+    this.mealFiltered = structuredClone(this.mealsService.meals[0])
+    this.dishKeyword = ''
 
+    this.dateSelected = date
+    this.mealSelected = meal
+    this.dishesSelected = structuredClone(this.getDishes(date, meal)) ?? []
 
     $("#mealModal").modal('show')
   }
 
-  getMeals(date: Date, meal: string) {
-    // let d = 
-    // console.log(d)
-    // console.log(this.mealPlans)
-
+  getDishes(date: Date, meal: string) {
     let day = this.mealPlans[this.getDate(date) as keyof typeof this.mealPlans]
     if (day == null) {
       return null
     }
 
-    // if (day[meal]) {
-    //   // if (checkExists) return true
-      
-    //   return day[meal]
-    // }
-
     return day[meal]
-
-    // return date.getFullYear() == d.getFullYear() && date.getMonth() == d.getMonth() && date.getDate() == d.getDate()
   }
 
   getDate(date: Date) {
     return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
   }
 
+  searchDishes() {
+    let filtered = structuredClone(this.meal)
+    for (let c of filtered['categories']) {
+      c['meals'] = c['meals'].filter((m:string) => m.includes(this.dishKeyword))
+    }
+    this.mealFiltered = filtered
+  }
+
+  selectDish(dish: string) {
+    if (this.dishesSelected.includes(dish)) {
+      this.dishesSelected = this.dishesSelected.filter((d: string) => d != dish)
+    } else {
+      this.dishesSelected.push(dish)
+    }
+  }
 
     // this.http.get<any>(environment.urlPrefix + 'testJson').subscribe({
     //   next: (res: any) => {
