@@ -23,27 +23,29 @@ dbConfig = {
 let pool = new pg.Pool(dbConfig)
 
 app.get('/api/meal-plans', async (req, res) => {
-  console.log(`Receive code ${req.query.dates}`)
+  // console.log(`Receive code ${decodeURIComponent(req.query.dates)}`)
 
-  res.status(200).json({
-    '8/11/2025': {
-      snack: ['苏打饼干'],
-    },
-    '8/14/2025': {
-      lunch: ['饭菜1', '饭菜2', '饭菜3', '饭菜4', '饭菜5', '饭菜6'],
-    },
-    '8/15/2025': {
-      breakfast: ['馒头', '炒青菜', '白粥'],
-      lunch: ['红烧肉', '面包', '汤', '菜心'],
-      dinner: ['石锅拌饭'],
+  try {
+    let result = await pool.query(`select key, value from meal_plans where key = ANY($1)`, [decodeURIComponent(req.query.dates).split(",")])
+    let response = {}
+
+    for (let r of result.rows) {
+      response[r.key] = JSON.parse(r.value)
     }
-  })
+    res.status(200).json(response)
+  } catch (e) {
+    res.status(400).json({message: e.message})
+  }
 })
 
-app.post('/api/meal-plans', async (req, res) => {
-  console.log(`Receive code ${req.body.code}`)
-
-  res.status(200).json({})
+app.put('/api/meal-plans/:date', async (req, res) => {
+  // console.log(`Receive date ${req.params.date} with data ${JSON.stringify(req.body)}`)
+  try {
+    await pool.query(`insert into meal_plans values ($1, $2) on conflict (key) do update set value = $2`, [req.params.date, JSON.stringify(req.body)])
+    res.status(200).json(req.body)
+  } catch (e) {
+    res.status(400).json({message: e.message})
+  }
 })
 
 app.get('/api/dishes', async (req, res) => {

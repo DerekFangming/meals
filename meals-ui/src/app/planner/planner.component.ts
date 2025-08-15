@@ -72,7 +72,7 @@ export class PlannerComponent implements OnInit {
 
     this.weekRangeLabel = `${this.monthLabel[this.week[0].getMonth()]} ${this.week[0].getDate()} - ${this.monthLabel[this.week[6].getMonth()]} ${this.week[6].getDate()}, ${this.week[6].getFullYear()}`
 
-    let params = new HttpParams().set('dates', this.week.map(d => this.getDate(d)).join(','))
+    let params = new HttpParams().set('dates', encodeURIComponent(this.week.map(d => this.getDate(d)).join(',')))
     this.http.get<any>(environment.urlPrefix + 'api/meal-plans', {params: params}).subscribe({
       next: (res: any) => {
         this.mealPlans = res
@@ -143,42 +143,27 @@ export class PlannerComponent implements OnInit {
     }
   }
 
-    // this.http.get<any>(environment.urlPrefix + 'testJson').subscribe({
-    //   next: (res: any) => {
-    //     console.log(res)
-    //   },
-    //   error: (error: any) => {
-    //     console.log(error)
-    //   }
-    // })
-  // keyPressed(key: string) {
-  //   this.code += key
-  // }
+  updateMeal() {
+    console.log('setting ' + this.dateSelected + ' - ' + this.mealSelected + ' to ' + this.dishesSelected)
+    let day = this.mealPlans[this.getDate(this.dateSelected) as keyof typeof this.mealPlans]
+    console.log('existing ' + JSON.stringify(day))
 
-  // deletePressed() {
-  //   this.code = this.code.slice(0, -1);
-  // }
+    if (day == null) {
+      console.log('existing is null. setting it')
+      day = {}
+      this.mealPlans[this.getDate(this.dateSelected) as keyof typeof this.mealPlans] = day
+    }
 
-  // sendPressed() {
-  //   if (this.code == '') {
-  //     this.notifierService.error('Code is empty')
-  //     return
-  //   }
+    day[this.mealSelected] = this.dishesSelected
+    console.log('updated ' + this.getDate(this.dateSelected) + ' to ' + JSON.stringify(day))
 
-  //   this.http.post<any>(environment.urlPrefix + 'api/send-code', {code: this.code}).subscribe({
-  //     next: (res: any) => {
-  //       this.notifierService.success('Code is sent')
-  //       this.code = ''
-  //     },
-  //     error: (error: any) => {
-  //       if (error.status == 429) {
-  //         this.notifierService.error('Too many requests, please try again later.')
-  //       } else {
-  //         this.notifierService.error('Unknown error, please try again later.')
-  //       }
-  //     }
-  //   })
-
-  // }
+    this.http.put<any>(environment.urlPrefix + 'api/meal-plans/' + encodeURIComponent(this.getDate(this.dateSelected)), day).subscribe({
+      next: (res: any) => {
+      },
+      error: (error: any) => {
+        this.notifierService.error('Unknown error, please try again later.')
+      }
+    })
+  }
 
 }
