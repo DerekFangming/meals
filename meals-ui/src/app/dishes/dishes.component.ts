@@ -6,13 +6,13 @@ import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { NotificationsService } from 'angular2-notifications';
 
 @Component({
-  selector: 'app-meals',
+  selector: 'app-dishes',
   standalone: true,
   imports: [RouterOutlet, FormsModule, CommonModule],
-  templateUrl: './meals.component.html',
-  styleUrl: './meals.component.css'
+  templateUrl: './dishes.component.html',
+  styleUrl: './dishes.component.css'
 })
-export class MealsComponent implements OnInit {
+export class DishesComponent implements OnInit {
 
   time = new Date()
 

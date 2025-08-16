@@ -12,17 +12,6 @@ import { DishesService } from './dishes.service'
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
-
-  // categories = [{
-  //   label: '月子餐1',
-  //   name: 'postpartum'
-  // },{
-  //   label: '健康饮食2',
-  //   name: 'healthy'
-  // },{
-  //   label: '大鱼大肉3',
-  //   name: 'meaty'
-  // }]
   
   meals = []
 
@@ -47,7 +36,7 @@ export class AppComponent implements OnInit {
     if (this.currentTab == 'planner') {
       this.router.navigate(['/'])
     } else {
-      this.router.navigate(['/meals/' + this.currentTab])
+      this.router.navigate(['/dishes/' + this.currentTab])
     }
   }
 

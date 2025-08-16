@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router'
 import { PlannerComponent } from './planner/planner.component'
-import { MealsComponent } from './meals/meals.component'
+import { DishesComponent } from './dishes/dishes.component'
 
 export const routes: Routes = [
   { path: '', component: PlannerComponent },
-  { path: 'meals/:name', component: MealsComponent },
+  { path: 'dishes/:name', component: DishesComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ]
