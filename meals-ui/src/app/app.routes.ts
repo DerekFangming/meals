@@ -4,6 +4,6 @@ import { DishesComponent } from './dishes/dishes.component'
 
 export const routes: Routes = [
   { path: '', component: PlannerComponent },
-  { path: 'dishes/:name', component: DishesComponent },
+  { path: 'dishes/:id', component: DishesComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ]

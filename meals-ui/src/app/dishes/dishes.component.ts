@@ -4,6 +4,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { NotificationsService } from 'angular2-notifications';
+import { DishesService } from '../dishes.service';
+import { environment } from '../../environments/environment';
+
+declare var $: any
 
 @Component({
   selector: 'app-dishes',
@@ -14,15 +18,63 @@ import { NotificationsService } from 'angular2-notifications';
 })
 export class DishesComponent implements OnInit {
 
-  time = new Date()
+  dishes: any = {}
+  dishesEdited: any = {}
 
-  constructor(private route: ActivatedRoute, private http: HttpClient, private notifierService: NotificationsService) {
+  editing = false
+
+  constructor(private route: ActivatedRoute, private http: HttpClient, public dishesService: DishesService, private notifierService: NotificationsService) {
   }
   
   ngOnInit() {
     this.route.params.subscribe(val => {
-      console.log('123: ' + val['name'] + this.time)
+      this.editing = false
+      this.dishes = this.dishesService.dishes.filter(d => d['id'] == val['id'])[0]
     })
+  }
+
+  editDishes() {
+    this.dishesEdited = structuredClone(this.dishes)
+    this.editing = true
+  }
+
+  cancelEditingDishes() {
+    this.editing = false
+  }
+
+  addDish(c: any, i: number) {
+    let dish = $(`#new-dish-${i}`).val().trim()
+
+    if (dish == '') {
+      this.notifierService.error('菜名不能为空')
+      return
+    } else if (c['dishes'].includes(dish)) {
+      this.notifierService.error('菜名不能重复')
+      return
+    }
+
+    c['dishes'].push(dish)
+    $(`#new-dish-${i}`).val('')
+  }
+
+  deleteDish(c: any, i: number) {
+    c['dishes'].splice(i, 1)
+  }
+
+  saveDishes() {
+    this.http.put<any>(environment.urlPrefix + 'api/dishes/' + this.dishesEdited.id, this.dishesEdited).subscribe({
+      next: (res: any) => {
+        this.dishes = this.dishesEdited
+        this.editing = false
+      },
+      error: (error: any) => {
+        this.notifierService.error('Unknown error, please try again later.')
+      }
+    })
+  }
+
+  trackByFn(index: any, item: any) {
+    return index
   }
 
 }
