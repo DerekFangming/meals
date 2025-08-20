@@ -1,5 +1,6 @@
-<div class="container-fluid">
-  <div class="row mt-5">
+<!-- Desktop View -->
+<div class="container-fluid d-none d-md-block">
+  <div class="row mt-2">
     <div class="col">
       <button type="button" class="btn btn-outline-secondary" (click)="displayCurrentWeek()" [disabled]="todayCol != -1">跳转到本周</button>
       <button type="button" class="btn btn-outline-secondary ms-4" (click)="displayPreviousWeek()"><i class="fa fa-angle-left px-1" aria-hidden="true"></i></button>
@@ -41,6 +42,63 @@
           <tr style="height:150px">
             <th class="fw-light" scope="row">加餐</th>
             <th class="pointer" scope="col" [style.background-color]="i == todayCol ? '#e3f2fd' : ''" *ngFor="let day of week; let i = index" (click)="editMeal(day, 'snack')">
+              <h5 class="card-title mb-0 fw-light" *ngFor="let m of getDishes(day, 'snack')">{{m}}</h5>
+            </th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Mobile View -->
+<div class="container-fluid d-block d-md-none">
+  <div class="row mt-2">
+    <div class="col-12">
+      <span class="lead ms-2">{{dayLabel}}</span>
+    </div>
+
+      
+    <div class="col-12">
+      <button type="button" class="btn btn-outline-secondary" (click)="displayCurrentDay()" [disabled]="day.getTime() == today.getTime()">今天</button>
+      <button type="button" class="btn btn-outline-secondary ms-4" (click)="displayPreviousDay()"><i class="fa fa-angle-left px-1" aria-hidden="true"></i></button>
+      <button type="button" class="btn btn-outline-secondary ms-2" (click)="displayNextDay()"><i class="fa fa-angle-right px-1" aria-hidden="true"></i></button>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col">
+      <table class="table table-bordered">
+        <thead class="table-light">
+          <tr>
+            <th style="width:5%;" scope="col" ></th>
+            <th style="width:95%;" scope="col">
+              <p class="lead mb-0" style="font-size: 2rem;">{{day.getDate()}}</p>
+              <p class="mb-0 fw-light">{{weekLabel[day.getDay()]}}</p>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="height:50px">
+            <th class="fw-light" scope="row">早餐</th>
+            <th class="pointer" scope="col" (click)="editMeal(day, 'breakfast')">
+              <h5 class="card-title mb-0 fw-light" *ngFor="let m of getDishes(day, 'breakfast')">{{m}}</h5>
+            </th>
+          </tr>
+          <tr style="height:50px">
+            <th class="fw-light" scope="row">午餐</th>
+            <th class="pointer" scope="col" (click)="editMeal(day, 'lunch')">
+              <h5 class="card-title mb-0 fw-light" *ngFor="let m of getDishes(day, 'lunch')">{{m}}</h5>
+            </th>
+          </tr>
+          <tr style="height:50px">
+            <th class="fw-light" scope="row">晚餐</th>
+            <th class="pointer" scope="col" (click)="editMeal(day, 'dinner')">
+              <h5 class="card-title mb-0 fw-light" *ngFor="let m of getDishes(day, 'dinner')">{{m}}</h5>
+            </th>
+          </tr>
+          <tr style="height:50px">
+            <th class="fw-light" scope="row">加餐</th>
+            <th class="pointer" scope="col" (click)="editMeal(day, 'snack')">
               <h5 class="card-title mb-0 fw-light" *ngFor="let m of getDishes(day, 'snack')">{{m}}</h5>
             </th>
           </tr>

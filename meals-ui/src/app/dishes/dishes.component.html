@@ -36,13 +36,13 @@
             <th style="width:10%;" class="fw-light" class="fw-light" scope="row"> {{ c['name'] }}</th>
             <th style="width:90%;" class="fw-light" scope="col" style="display: flex; flex-wrap: wrap;">
               <div class="row w-100">
-                <div class="col-2 my-1" *ngFor="let d of c['dishes']; let i = index; trackBy: trackByFn">
+                <div class="col-lg-2 col-md-6 my-1" *ngFor="let d of c['dishes']; let i = index; trackBy: trackByFn">
                   <div class="input-group me-2">
                     <input type="text" class="form-control" [(ngModel)]="c['dishes'][i]">
                     <button class="btn btn-outline-danger" type="button" (click)="deleteDish(c, i)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                   </div>
                 </div>
-                <div class="col-2 my-1">
+                <div class="col-lg-2 col-md-6 my-1">
                   <div class="input-group me-2">
                     <input type="text" class="form-control" id="new-dish-{{i}}" (keydown.enter)="addDish(c, i)">
                     <button class="btn btn-outline-success" type="button" (click)="addDish(c, i)"><i class="fa fa-plus" aria-hidden="true"></i></button>

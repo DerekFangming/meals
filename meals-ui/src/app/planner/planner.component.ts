@@ -26,6 +26,9 @@ export class PlannerComponent implements OnInit {
   week : Date[] = []
   weekLabel = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
   monthLabel = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+  
+  dayLabel = ''
+  day = new Date(this.today)
 
   dishType:any = {}
   dishTypeFiltered:any = {}
@@ -43,13 +46,6 @@ export class PlannerComponent implements OnInit {
 
   ngOnInit() {
     this.displayCurrentWeek()
-    // this.dishesService.getAllMeals().subscribe({
-    //   next: (res: any) => {
-    //   },
-    //   error: (error: any) => {
-    //     this.notifierService.error('Unknown error, please try again later.')
-    //   }
-    // })
   }
 
   displayCurrentWeek() {
@@ -63,11 +59,15 @@ export class PlannerComponent implements OnInit {
     this.todayCol = -1
 
     for (let i = 0; i < 7; i ++) {
-      let day = new Date(start)
-      day.setDate(start.getDate() + i)
-      this.week.push(day)
+      let d = new Date(start)
+      d.setDate(start.getDate() + i)
+      this.week.push(d)
 
-      if (day.getTime() == this.today.getTime()) this.todayCol = i
+      if (d.getTime() == this.today.getTime()) this.todayCol = i
+      if (d.getTime() == this.day.getTime()) {
+        this.dayLabel = `${this.monthLabel[this.day.getMonth()]} ${this.day.getDate()}, ${this.day.getFullYear()}`
+      }
+
     }
 
     this.weekRangeLabel = `${this.monthLabel[this.week[0].getMonth()]} ${this.week[0].getDate()} - ${this.monthLabel[this.week[6].getMonth()]} ${this.week[6].getDate()}, ${this.week[6].getFullYear()}`
@@ -93,6 +93,21 @@ export class PlannerComponent implements OnInit {
     let start = new Date(this.week[0])
     start.setDate(start.getDate() + 7)
     this.displayWeekStartingWith(start)
+  }
+
+  displayCurrentDay() {
+    this.displayCurrentWeek()
+    this.day = new Date(this.today)
+  }
+  
+  displayPreviousDay() {
+    this.day.setDate(this.day.getDate() - 1)
+    if (this.day.getTime() < this.week[0].getTime()) this.displayPreviousWeek()
+  }
+
+  displayNextDay() {
+    this.day.setDate(this.day.getDate() + 1)
+    if (this.day.getTime() > this.week[6].getTime()) this.displayNextWeek()
   }
 
   selectDishType(dishType: any) {
@@ -144,18 +159,14 @@ export class PlannerComponent implements OnInit {
   }
 
   updateMeal() {
-    console.log('setting ' + this.dateSelected + ' - ' + this.mealSelected + ' to ' + this.dishesSelected)
     let day = this.mealPlans[this.getDate(this.dateSelected) as keyof typeof this.mealPlans]
-    console.log('existing ' + JSON.stringify(day))
 
     if (day == null) {
-      console.log('existing is null. setting it')
       day = {}
       this.mealPlans[this.getDate(this.dateSelected) as keyof typeof this.mealPlans] = day
     }
 
     day[this.mealSelected] = this.dishesSelected
-    console.log('updated ' + this.getDate(this.dateSelected) + ' to ' + JSON.stringify(day))
 
     this.http.put<any>(environment.urlPrefix + 'api/meal-plans/' + encodeURIComponent(this.getDate(this.dateSelected)), day).subscribe({
       next: (res: any) => {
