@@ -8,6 +8,7 @@ const pg = require('pg')
 const port = '9005'
 const app = express()
 app.use(bodyParser.json({limit: '100mb'}), cors())
+app.disable('etag')
 
 dbConfig = {
   user: 'postgres',
@@ -113,5 +114,5 @@ app.get('*', function (req, res) {
 })
 
 app.listen(port, () => {
-  console.log(`meals app started on port ${port}`)
+  console.log(`meals app started on port ${port} on ${new Date().toTimeString()}`)
 })
