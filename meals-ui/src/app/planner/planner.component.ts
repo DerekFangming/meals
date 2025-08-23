@@ -98,16 +98,19 @@ export class PlannerComponent implements OnInit {
   displayCurrentDay() {
     this.displayCurrentWeek()
     this.day = new Date(this.today)
+    this.dayLabel = `${this.monthLabel[this.day.getMonth()]} ${this.day.getDate()}, ${this.day.getFullYear()}`
   }
   
   displayPreviousDay() {
     this.day.setDate(this.day.getDate() - 1)
     if (this.day.getTime() < this.week[0].getTime()) this.displayPreviousWeek()
+    this.dayLabel = `${this.monthLabel[this.day.getMonth()]} ${this.day.getDate()}, ${this.day.getFullYear()}`
   }
 
   displayNextDay() {
     this.day.setDate(this.day.getDate() + 1)
     if (this.day.getTime() > this.week[6].getTime()) this.displayNextWeek()
+    this.dayLabel = `${this.monthLabel[this.day.getMonth()]} ${this.day.getDate()}, ${this.day.getFullYear()}`
   }
 
   selectDishType(dishType: any) {

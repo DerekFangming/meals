@@ -2,6 +2,10 @@
   cursor: pointer;
 }
 
+.disable-dbl-tap-zoom {
+  touch-action: manipulation;
+}
+
 .nav-inline {
   display: flex;
   flex-direction: row;

@@ -52,17 +52,17 @@
 </div>
 
 <!-- Mobile View -->
-<div class="container-fluid d-block d-md-none">
+<div class="container-fluid d-block d-md-none disable-dbl-tap-zoom">
   <div class="row mt-2">
-    <div class="col-12">
+    <div class="col-6">
       <span class="lead ms-2">{{dayLabel}}</span>
     </div>
 
       
-    <div class="col-12">
-      <button type="button" class="btn btn-outline-secondary" (click)="displayCurrentDay()" [disabled]="day.getTime() == today.getTime()">今天</button>
-      <button type="button" class="btn btn-outline-secondary ms-4" (click)="displayPreviousDay()"><i class="fa fa-angle-left px-1" aria-hidden="true"></i></button>
-      <button type="button" class="btn btn-outline-secondary ms-2" (click)="displayNextDay()"><i class="fa fa-angle-right px-1" aria-hidden="true"></i></button>
+    <div class="col-6">
+      <button type="button" class="btn btn-outline-secondary float-end ms-2" (click)="displayNextDay()"><i class="fa fa-angle-right px-1" aria-hidden="true"></i></button>
+      <button type="button" class="btn btn-outline-secondary float-end ms-2" (click)="displayPreviousDay()"><i class="fa fa-angle-left px-1" aria-hidden="true"></i></button>
+      <button type="button" class="btn btn-outline-secondary float-end" (click)="displayCurrentDay()" [disabled]="day.getTime() == today.getTime()">今天</button>
     </div>
   </div>
   <div class="row mt-2">
