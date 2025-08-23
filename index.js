@@ -39,7 +39,7 @@ app.get('/api/meal-plans', async (req, res) => {
 
 app.put('/api/meal-plans/:date', async (req, res) => {
   try {
-    await pool.query(`insert into meal_plans values ($1, $2) on conflict (key) do update set value = $2`, [req.params.date, JSON.stringify(req.body)])
+    await pool.query(`insert into meal_plans values ($1, $2) on conflict (key) do update set value = $2`, [decodeURIComponent(req.params.date), JSON.stringify(req.body)])
     res.status(200).json(req.body)
   } catch (e) {
     res.status(500).json({message: e.message})
@@ -114,5 +114,5 @@ app.get('*', function (req, res) {
 })
 
 app.listen(port, () => {
-  console.log(`meals app started on port ${port} on ${new Date().toTimeString()}`)
+  console.log(`meals app started on port ${port}`)
 })

@@ -78,7 +78,7 @@ export class PlannerComponent implements OnInit {
         this.mealPlans = res
       },
       error: (error: any) => {
-        this.notifierService.error('Unknown error, please try again later.')
+        console.log(error)
       }
     })
   }

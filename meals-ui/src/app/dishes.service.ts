@@ -15,12 +15,10 @@ export class DishesService {
   getAllDishes(): Observable<any> {
     return new Observable(observer => {
       if (this.dishes.length != 0) {
-        console.log('Reading cache')
         observer.next(this.dishes)
         return
       }
 
-      console.log('Reading source')
       this.http.get<any>(environment.urlPrefix + 'api/dishes').subscribe({
         next: (res: any) => {
           this.dishes = res

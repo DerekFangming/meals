@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
         this.meals = res
       },
       error: (error: any) => {
-        this.notifierService.error('Unknown error, please try again later.')
+        console.log(error)
       }
     })
   }
