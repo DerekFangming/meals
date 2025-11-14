@@ -148,7 +148,7 @@ export class PlannerComponent implements OnInit {
   searchDishes() {
     let filtered = structuredClone(this.dishType)
     for (let c of filtered['categories']) {
-      c['meals'] = c['meals'].filter((m:string) => m.includes(this.dishKeyword))
+      c['dishes'] = c['dishes'].filter((m:string) => m.includes(this.dishKeyword))
     }
     this.dishTypeFiltered = filtered
   }
