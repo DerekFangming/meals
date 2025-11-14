@@ -17,10 +17,10 @@ export class AppComponent implements OnInit {
 
   currentTab = 'planner'
   
-  constructor(private mealsService: DishesService, private router: Router, private notifierService: NotificationsService){}
+  constructor(private dishesService: DishesService, private router: Router, private notifierService: NotificationsService){}
 
   ngOnInit() {
-    this.mealsService.getAllDishes().subscribe({
+    this.dishesService.getAllDishes().subscribe({
       next: (res: any) => {
         this.meals = res
       },

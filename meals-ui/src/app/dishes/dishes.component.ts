@@ -29,7 +29,17 @@ export class DishesComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(val => {
       this.editing = false
-      this.dishes = this.dishesService.dishes.filter(d => d['id'] == val['id'])[0]
+
+       this.dishesService.getAllDishes().subscribe({
+        next: (res: any) => {
+          this.dishes = this.dishesService.dishes.filter(d => d['id'] == val['id'])[0]
+        },
+        error: (error: any) => {
+          console.log(error)
+        }
+      })
+
+      
     })
   }
 
@@ -65,6 +75,13 @@ export class DishesComponent implements OnInit {
     this.http.put<any>(environment.urlPrefix + 'api/dishes/' + this.dishesEdited.id, this.dishesEdited).subscribe({
       next: (res: any) => {
         this.dishes = this.dishesEdited
+        for (const d of this.dishesService.dishes) {
+          if (d['id'] == this.dishes.id) {
+            d['categories'] = this.dishes.categories
+            break
+          }
+        }
+
         this.editing = false
       },
       error: (error: any) => {
